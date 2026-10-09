@@ -95,23 +95,17 @@ The task name is read from the gaze file name, so
 
 ### Step 1 - resample the raw gaze data
 
-The tracker stores one row per sample. Everything downstream needs **one row per
-video frame**, with `videoFrame` k matching the saliency map `frame_000k.png`.
-The grid is therefore built at the frame rate of the **stimulus video** - not a
-fixed 60 Hz, or the frames would no longer line up.
+The sampling rate of the eye tracker is 120Hz, but the videos are normally 60, 30 or 25 fps. 
+Therefore, resampling is needed. 
+The code will first automatically read the FPS from video/<task>.mp4, and then resample the gaze data based on the FPS of the video.
 
 ```bash
-# normal case: read the rate from video/<task>.mp4 for every file
-python resample_gaze.py gazedata Resample_Output
+# normal case: read the corresponding FPS of the video for each gaze file automatically, resample the data, and sort it into its own subfolder. 
+python resample_gaze.py <inputfolder> <outputfolder> --by_task
 
 # one task only, sorted into its own subfolder
-python resample_gaze.py gazedata Resample_Output --only "*blockTowerR*" --by_task
+python resample_gaze.py <inputfolder> <outputfolder> --only "*videoname*" --by_task
 
-# force one rate for every file of this run (29.97 is fine to count as 30)
-python resample_gaze.py gazedata Resample_Output --fps 30
-
-# look before you leap: print the rate each file would use, write nothing
-python resample_gaze.py gazedata Resample_Output --dry_run
 ```
 
 Output:
@@ -167,7 +161,7 @@ slow step - use `--only` and `--max_frames 50` first if you want a smoke test.
 
 ```bash
 # every participant of one task
-python nss_score_new.py --gaze_dir Resample_Output/blockTowerR --saliency_dir saliency_frames/blockTowerR
+python nss_score_new.py --gaze_dir Resample_Output/<taskname> --saliency_dir saliency_frames/<taskname>
 
 # many tasks at once: the map folder is picked per file from its own name
 python nss_score_new.py --gaze_dir Resample_Output --recursive --saliency_root saliency_frames
