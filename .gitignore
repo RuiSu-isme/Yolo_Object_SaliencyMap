@@ -1,0 +1,75 @@
+# ---------------------------------------------------------------------------
+# Never commit study data, results or media. This pipeline reads eye-tracking
+# recordings, stimulus videos and saliency maps, and writes score files; none
+# of that belongs in a repository. Putting data into git history is effectively
+# permanent, so this file is a safety net: keep the repository folder for code.
+# ---------------------------------------------------------------------------
+
+# raw and resampled gaze data, results
+gazedata/
+Resample_Output*/
+Resample_Output_fps*/
+nss_Output*/
+auc_Output*/
+saliency_frames*/
+output*/
+results/
+*.csv
+*.xlsx
+*.xls
+
+# stimulus videos and generated media
+video/
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# model weights (downloaded automatically on the first run)
+*.pt
+*.pth
+*.onnx
+
+# ---------------------------------------------------------------------------
+# EXCEPTIONS - these ARE part of the package.
+#
+# The four landmark/detector models are small (12 MB total) and are bundled so
+# a fresh clone runs with no download step, and so the repository works on a
+# machine where pip and external downloads are blocked. Same for _vendor\,
+# which holds mediapipe unpacked (see the README).
+#
+# Note that a negated path cannot re-include a file if a parent DIRECTORY is
+# excluded, so the directories below have to be un-ignored by name.
+# ---------------------------------------------------------------------------
+!models/
+!models/**
+!_vendor/
+!_vendor/**
+
+# local scratch, not part of the package
+_face_hand_trial/
+trashbin/
+_acl_recovery/
+_tmp/
+
+# python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+
+# editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# local notes that are not part of the package
+DATA_ACCESS.md

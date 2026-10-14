@@ -1,0 +1,35 @@
+# Python packages for the saliency-vs-gaze pipeline.
+#
+# TWO INDEPENDENT HALVES. Install only what you need:
+#
+#   FACE / HAND maps  (yolo_face_saliency.py, yolo_social_saliency.py)
+#       pandas, numpy, opencv-python
+#       mediapipe is NOT installed with pip -- it is vendored under _vendor\
+#       and loaded from there. Do not add it here: the vendored copy is what
+#       makes the repository self-contained. See README "Vendored mediapipe".
+#
+#   OBJECT maps       (yolo_heatmap_video.py)
+#       the three above plus ultralytics, which brings torch and torchvision
+#
+# Recommended install order on a CPU-only machine (otherwise pip downloads the
+# ~2.5 GB CUDA build of torch for nothing):
+#
+#     pip install numpy pandas opencv-python
+#     pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+#     pip install ultralytics
+#
+# Version numbers in the comments are the ones this pipeline was tested with
+# (Windows, CPU only); the constraints below are kept loose on purpose.
+
+pandas>=2.0            # tested with 2.0.5 / 3.0.5   scoring + resampling
+numpy>=1.24            # tested with 2.2.6 / 2.5.3   all steps
+opencv-python>=4.5.4   # tested with 5.0.0           all steps; >=4.5.4 for cv2.FaceDetectorYN
+#
+# NOTE: do NOT also install opencv-contrib-python. It shadows cv2 and removes
+# cv2.FaceDetectorYN, which the face maps depend on.
+
+# ---- object maps only (optional; pulls torch) ----
+ultralytics>=8.1       # tested with 8.4.155
+torch>=2.0             # tested with 2.14.0+cpu
+torchvision>=0.15      # tested with 0.29.0+cpu
+
